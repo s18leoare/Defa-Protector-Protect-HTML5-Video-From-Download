@@ -1,6 +1,8 @@
 <?php
 //Written By Juthawong Naisanguansee
-session_start();
+if(session_id() == ''){
+     session_start(); 
+}
  $pageURL = 'http';
  if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
  $pageURL .= "://";
@@ -27,11 +29,11 @@ window.setInterval(function () {
 
 document.body.innerHTML = "You spoof useragent";
 window.stop();
-   window.location = "http://ww2.juthawong.com/nojavascript.php";
+   window.location = "/nojavascript.php";
  }},1000);
 </script>
 <noscript>
-    <meta HTTP-EQUIV="REFRESH" content="0; url=http://ww2.juthawong.com/spoof.php"> 
+    <meta HTTP-EQUIV="REFRESH" content="0; url=/spoof.php"> 
 </noscript>
 <?php
 }
@@ -43,14 +45,14 @@ var userAgent = userAgent || navigator.userAgent;
  if( userAgent.indexOf("MSIE ") > -1 || userAgent.indexOf("Trident/") > -1){
 
 }else{
-window.location.href="http://www.juthawong.com/nojavascript.php";
+window.location.href="/nojavascript.php";
 exit();
 }
 </script>
 
 <noscript>
 	<meta http-equiv="refresh" content="900" />
-    <META http-equiv="refresh" content="5;URL=http://www.juthawong.com/nojavascript.php"> 
+    <META http-equiv="refresh" content="5;URL=/nojavascript.php"> 
 
 </noscript>
 <?php
@@ -70,7 +72,8 @@ $_SESSION['defa'.$matches['2'].$_SESSION['defat']] = md5(time()."Defa Protector"
 $_SESSION['imdefa'.$_SESSION['defat']]=md5('Defa').base64_encode(base64_encode($matches['2']));
 $_SESSION['x'.$matches['2']]=0;
 $_SESSION['defa'.$matches['2']] = md5(time()."Defa Protector");
-  return $matches[1] . $rootURL . "defavid.php?defat=".$_SESSION['defat']."&defain=".$_SESSION['defa'.$matches['2'].$_SESSION['defat']]."&im=" .md5('Defa').base64_encode(base64_encode($matches['2']));
+$_SESSION['file'.$_SESSION['defat']] = md5('Defa').base64_encode(base64_encode($matches['2']));
+  return $matches[1] . $rootURL . "/defavid.php?defat=".$_SESSION['defat'];
 }
 
 $mes = preg_replace_callback("/(<video[^>]*src *= *[\"']?)([^\"']*)/i", getURL, $out2);
