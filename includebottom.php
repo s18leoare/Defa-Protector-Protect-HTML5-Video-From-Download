@@ -1,8 +1,11 @@
 <?php
+
 //Written By Juthawong Naisanguansee
 if(session_id() == ''){
      session_start(); 
 }
+error_reporting(0);
+
  $pageURL = 'http';
  if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
  $pageURL .= "://";
@@ -13,50 +16,20 @@ if(session_id() == ''){
  }
 
 $_SESSION['url'] = $pageURL;
-
-
 $out2 = ob_get_clean();
 if(strpos($out2,"<safe")==false){
+$window = md5(time());
+$_SESSION['window'] = $window;
 ?>
-<?php
-function isMobile() {
-    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
-}
-if(isMobile()){?>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
 <script>
-window.setInterval(function () {
- if(navigator.userAgent!="<?php echo $_SERVER['HTTP_USER_AGENT']; ?>"){
-
-document.body.innerHTML = "You spoof useragent";
-window.stop();
-   window.location = "/nojavascript.php";
- }},1000);
+$.ajax({
+  type: "POST",
+  url: "/enable.php",
+});
 </script>
-<noscript>
-    <meta HTTP-EQUIV="REFRESH" content="0; url=/spoof.php"> 
-</noscript>
-<?php
-}
-if(strpos($_SERVER["HTTP_USER_AGENT"], 'MSIE')||strpos($_SERVER["HTTP_USER_AGENT"], 'Trident/7.0')){
-
-?>
-<script>
-var userAgent = userAgent || navigator.userAgent;
- if( userAgent.indexOf("MSIE ") > -1 || userAgent.indexOf("Trident/") > -1){
-
-}else{
-window.location.href="/nojavascript.php";
-exit();
-}
-</script>
-
-<noscript>
-	<meta http-equiv="refresh" content="900" />
-    <META http-equiv="refresh" content="5;URL=/nojavascript.php"> 
-
-</noscript>
-<?php
-}
+  <?php
 if(strpos($out2,"<safe")!==false){
 $_SESSION['safe']="SAFE";
 }
@@ -67,13 +40,14 @@ $_SESSION['defat'] = 1;
 }else{
 $_SESSION['defat'] = $_SESSION['defat'] + 1;
 }
+$file = dirname(__FILE__) . '/defaprotector.php';
 $_SESSION['x'.$matches['2'].$_SESSION['defat']]=0;
 $_SESSION['defa'.$matches['2'].$_SESSION['defat']] = md5(time()."Defa Protector");
 $_SESSION['imdefa'.$_SESSION['defat']]=md5('Defa').base64_encode(base64_encode($matches['2']));
 $_SESSION['x'.$matches['2']]=0;
 $_SESSION['defa'.$matches['2']] = md5(time()."Defa Protector");
 $_SESSION['file'.$_SESSION['defat']] = md5('Defa').base64_encode(base64_encode($matches['2']));
-  return $matches[1] . $rootURL . "/defavid.php?defat=".$_SESSION['defat'];
+  return $matches[1] . $rootURL . "/defavid.php?window=".$_SESSION['window']."&defat=".$_SESSION['defat'];
 }
 
 $mes = preg_replace_callback("/(<video[^>]*src *= *[\"']?)([^\"']*)/i", getURL, $out2);
