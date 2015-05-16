@@ -16,7 +16,10 @@ error_reporting(0);
  }
 
 $_SESSION['url'] = $pageURL;
-$out2 = ob_get_clean();
+
+$out2 = ob_get_content();
+if(strpos($out2,"<video")||strpos($out2,"<audio")){
+ob_clean();
 if(strpos($out2,"<safe")==false){
 $window = md5(time());
 $_SESSION['window'] = $window;
@@ -59,5 +62,5 @@ $mes = preg_replace_callback("/(<audio[^>]*src *= *[\"']?)([^\"']*)/i", getURL, 
 echo $mes;
 }else{
 echo $out2;
-}
+}}
 ?>
