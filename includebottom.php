@@ -5,18 +5,9 @@ if(session_id() == ''){
      session_start(); 
 }
 error_reporting(0);
-
- $pageURL = 'http';
- if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
- $pageURL .= "://";
- if ($_SERVER["SERVER_PORT"] != "80") {
-  $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
- } else {
-  $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
- }
-
-$_SESSION['url'] = $pageURL;
-$out2 = ob_get_clean();
+$out2 = ob_get_contents();
+if(strpos($out2, "<video")||strpos($out2, "<audio")||strpos($out2, "<source")){
+     ob_clean();
 if(strpos($out2,"<safe")==false){
 $window = md5(time());
 $_SESSION['window'] = $window;
@@ -40,7 +31,6 @@ $_SESSION['defat'] = 1;
 }else{
 $_SESSION['defat'] = $_SESSION['defat'] + 1;
 }
-$file = dirname(__FILE__) . '/defaprotector.php';
 $_SESSION['x'.$matches['2'].$_SESSION['defat']]=0;
 $_SESSION['defa'.$matches['2'].$_SESSION['defat']] = md5(time()."Defa Protector");
 $_SESSION['imdefa'.$_SESSION['defat']]=md5('Defa').base64_encode(base64_encode($matches['2']));
@@ -59,5 +49,5 @@ $mes = preg_replace_callback("/(<audio[^>]*src *= *[\"']?)([^\"']*)/i", getURL, 
 echo $mes;
 }else{
 echo $out2;
-}
+}}
 ?>
