@@ -4,13 +4,10 @@
 if(session_id() == ''){
      session_start(); 
 }
-$out2 = ob_get_contents();
+error_reporting(0);
 
- 
-if(strpos($out2,"<video")||strpos($out2,"<audio")){
-	 $pageURL = 'http';
-
-	if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+ $pageURL = 'http';
+ if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
  $pageURL .= "://";
  if ($_SERVER["SERVER_PORT"] != "80") {
   $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
@@ -19,8 +16,7 @@ if(strpos($out2,"<video")||strpos($out2,"<audio")){
  }
 
 $_SESSION['url'] = $pageURL;
-
-ob_clean();
+$out2 = ob_get_clean();
 if(strpos($out2,"<safe")==false){
 $window = md5(time());
 $_SESSION['window'] = $window;
@@ -63,5 +59,5 @@ $mes = preg_replace_callback("/(<audio[^>]*src *= *[\"']?)([^\"']*)/i", getURL, 
 echo $mes;
 }else{
 echo $out2;
-}}
+}
 ?>
