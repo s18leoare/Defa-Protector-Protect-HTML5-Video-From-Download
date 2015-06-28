@@ -1,5 +1,4 @@
 <?php
-
 ob_start();
 if(session_id() == ''){
      session_start(); 
@@ -8,8 +7,8 @@ $window = addslashes(strip_tags($_GET['window']));
 $md5defa = md5('Defa');
 $t = (int)$_GET['defat'];
 $filedefa = str_replace($md5defa,'',$_SESSION['file'.$t]);
-$file = base64_decode(base64_decode($filedefa));
-$defa = base64_decode(base64_decode($filedefa));
+$file = str_replace("https://","http://",base64_decode(base64_decode($filedefa)));
+$defa = str_replace("https://","http://",base64_decode(base64_decode($filedefa)));
 $defaurl = get_headers($file, 1);
 $url = $defaurl["Location"];
 if($url!=$file&&$url!=""){
