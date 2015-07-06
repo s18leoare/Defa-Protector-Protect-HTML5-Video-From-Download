@@ -5,7 +5,7 @@ Defa Protector is a php script that protect html5 video on your website from bei
 Sourceforge : 
 http://sourceforge.net/projects/defaprotecthtml5videodownload/?source=navbar
 
-How to use :
+#How to use :
 
 Wordpress upload to wp-content and activated
 
